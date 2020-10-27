@@ -8,4 +8,5 @@ It is based on the tutorial available in [WGCNA page] (https://horvath.genetics.
 ### File Description
 
 expressiondataEx.csv - example table with expression values for 5000 genes in 30 situations.
+
 phenoTrait.csv - example table containing phenotypic measures for 5 traits
