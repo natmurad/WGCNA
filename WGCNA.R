@@ -13,6 +13,7 @@ dir()
 library(WGCNA);
 
 options(stringsAsFactors = FALSE);
+
 #Enable multithread
 enableWGCNAThreads();
 
@@ -63,26 +64,26 @@ plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="",
      cex.axis = 1.5, cex.main = 2)
 
 #Plot a line showing the cut-off
-abline(h = 47000, col = "red");
+abline(h = 47000, col = "red"); ####Set the cut-off based on your data
 
 # Determine clusters below the line
 #help("cutreeStatic")
 clust = cutreeStatic(sampleTree, cutHeight = 47000, minSize = 10)
-table(clust)
+#table(clust)
 #clust
 
 #Cluster 1 contains the samples we want to keep.
 keepSamples = (clust==1)
 expression0 = expression[keepSamples, ]
-dim(expression0)
+
 #dim(expression0)
 nGenes = ncol(expression0)
 nSamples = nrow(expression0)
 
 #Read phenotypic data
 traitData = read.csv("phenoTraits.csv", sep = ";");
-dim(traitData)
-names(traitData)
+#dim(traitData)
+#names(traitData)
 Samples = rownames(expression0);
 
 traitRows = match(Samples, traitData$EST);
@@ -100,13 +101,12 @@ traitColors = numbers2colors(datTraits, signed = FALSE);
 plotDendroAndColors(sampleTree2, traitColors,
                     groupLabels = names(datTraits), 
                     main = "Sample dendrogram and trait heatmap")
-save(expression0, datTraits, file = "SpodopteradataInput.RData")
+save(expression0, datTraits, file = "nameyourdataInput.RData")
 
 
 #######BUILDING THE NETWORK AND DETECTING MODULES
 
-#expression0 = expression0[, 1:10000]
-#lnames = load(file = "SpodopteradataInput.RData");
+#lnames = load(file = "nameyourdataInput.RData");
 #The variable lnames contains the names of loaded variables.
 #lnames
 
@@ -227,12 +227,13 @@ dev.off()
 moduleColors = mergedColors
 
 #Building numeric labels corresponding to the colors
+#Cluster grey has all the not clustered genes. It is usually not used in the analysis. All genes of this cluster have no similar pattern.
 colorOrder = c("grey", standardColors(50));
 moduleLabels = match(moduleColors, colorOrder)-1;
 MEs = mergedMEs;
 
 #Saving the module colors and labels to ensuing use
-save(MEs, moduleLabels, moduleColors, geneTree, file = "Spodoptera-02-networkConstruction-stepByStep.RData")
+save(MEs, moduleLabels, moduleColors, geneTree, file = "networkConstruction-stepByStep.RData")
 
 
 #Dealing with a big data set: Constructing a block-wise network and detecting modules
@@ -241,13 +242,13 @@ bwnet = blockwiseModules(expression0, maxBlockSize = 5000,
                          reassignThreshold = 0, mergeCutHeight = 0.25,
                          numericLabels = TRUE,
                          saveTOMs = TRUE,
-                         saveTOMFileBase = "SpodopteraTOM-blockwise",
+                         saveTOMFileBase = "TOM-blockwise",
                          verbose = 3)
 
 
 
 #Loding the results pf single-block analysis
-#load(file = "Spodoptera-02-networkConstruction-auto.RData");
+#load(file = "networkConstruction-auto.RData");
 # Re-labeling blockwise modules
 bwLabels = matchLabels(bwnet$colors, moduleLabels);
 
@@ -426,7 +427,7 @@ cyt = exportNetworkToCytoscape(modTOM,
                                edgeFile = "CytoscapeEdgeFile.txt",
                                nodeFile = "CytoscapeNodeFile.txt",
                                weighted = TRUE,
-                               threshold = 0.4,
+                               threshold = 0.4, ###Set the threshold
                                nodeNames = modGenes,
                                nodeAttr = moduleColors[inModule])
 
