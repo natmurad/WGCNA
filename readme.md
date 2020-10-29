@@ -12,3 +12,5 @@ It was adapted to my dataset and goals.
 expressiondataEx.csv - example table with expression values for 5000 genes in 30 situations.
 
 phenoTrait.csv - example table containing phenotypic measures for 5 traits
+
+WGCNA.R - Script in R to perform the WGCNA Analysis. Basically the script of WGCNA page but adapted to my data
