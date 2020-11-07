@@ -15,4 +15,4 @@ phenoTrait.csv - example table containing phenotypic measures for 5 traits
 
 WGCNATut.R - script in R to perform the WGCNA Analysis. Basically the script of WGCNA page but adapted to my data
 
-WGCNATutorial.html - document explaining how to do the analysis
+WGCNATutorial.html - document explaining how to do the analysis. It can be acessed on my [Rpubs page](https://rpubs.com/natmurad/WGCNA)
